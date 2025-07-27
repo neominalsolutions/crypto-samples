@@ -52,6 +52,9 @@ public class RSAService {
                     .replace("-----END PRIVATE KEY-----", "")
                     .replaceAll("\\s", "");
 
+            // KeyFactory, şifreleme algoritmalarında kullanılan anahtarları dönüştürmek ve yeni anahtarlar oluşturmak için kullanılan bir sınıftır. Bu sınıf, şifreleme işlemlerinde kullanılan asymmetric key (asimetrik anahtarlar) veya symmetric key (simetrik anahtarlar) yapılarını yönetmek için kullanılır.
+            // Anahtarın şifreli veya belirli bir formatta (örneğin PEM ) olması durumunda, bu anahtarları byte dizilerine dönüştürmek için kullanılır.
+
             byte[] encoded = Base64.getDecoder().decode(privateKeyPEM);
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             return keyFactory.generatePrivate(new java.security.spec.PKCS8EncodedKeySpec(encoded));

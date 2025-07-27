@@ -1,5 +1,6 @@
 package com.mertalptekin.cryptosamples.controller;
 
+import com.mertalptekin.cryptosamples.service.HMACService;
 import com.mertalptekin.cryptosamples.service.PasswordHashingService;
 import com.mertalptekin.cryptosamples.service.RSAService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class CryptoController {
 
     @Autowired
     private PasswordHashingService passwordHashingService;
+
+    @Autowired
+    private HMACService hmacService;
 
     @PostMapping("rsa")
     public ResponseEntity testRsa() throws Exception {
@@ -38,5 +42,17 @@ public class CryptoController {
 
         return  ResponseEntity.ok().build();
     }
+
+    @PostMapping("/hmac")
+    public ResponseEntity generateHMAC() throws Exception {
+        var signature =  hmacService.generateHMACSignature("test", "mySecretKey");
+        System.out.println("HMAC Signature: " + signature);
+
+        boolean verifield = hmacService.validateHMACSignature("test", "mySecretKey",signature);
+        System.out.println("HMAC verifield: " + verifield);
+
+        return  ResponseEntity.ok().build();
+    }
+
 
 }
