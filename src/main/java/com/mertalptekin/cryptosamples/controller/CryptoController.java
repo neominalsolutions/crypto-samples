@@ -1,5 +1,6 @@
 package com.mertalptekin.cryptosamples.controller;
 
+import com.mertalptekin.cryptosamples.service.AESService;
 import com.mertalptekin.cryptosamples.service.HMACService;
 import com.mertalptekin.cryptosamples.service.PasswordHashingService;
 import com.mertalptekin.cryptosamples.service.RSAService;
@@ -22,6 +23,9 @@ public class CryptoController {
     @Autowired
     private HMACService hmacService;
 
+    @Autowired
+    private AESService aesService;
+
     @PostMapping("rsa")
     public ResponseEntity testRsa() throws Exception {
         rsaService.test("Deneme1");
@@ -43,6 +47,20 @@ public class CryptoController {
         return  ResponseEntity.ok().build();
     }
 
+    @PostMapping("/aes")
+    public ResponseEntity encrypt() throws Exception {
+
+       var secretKey = aesService.generateAESKey();
+
+        var encrpted = aesService.encrypt("Hello", secretKey);
+        System.out.println("Encrypted : " + encrpted);
+        var decrypted = aesService.decrypt(encrpted, secretKey);
+        System.out.println("Decrypted : " + decrypted);
+
+        return  ResponseEntity.ok().build();
+    }
+
+
     @PostMapping("/hmac")
     public ResponseEntity generateHMAC() throws Exception {
         var signature =  hmacService.generateHMACSignature("test", "mySecretKey");
@@ -53,6 +71,8 @@ public class CryptoController {
 
         return  ResponseEntity.ok().build();
     }
+
+
 
 
 }
